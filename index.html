@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>火焰</title>
+</head>
+<style>
+    div{
+        width: 800px;
+        height: 500px;
+        margin: 0 auto;
+    }
+    canvas{
+        background: #ccc;
+    }
+</style>
+<script>
+    window.onload=function () {
+        var canvas=document.getElementsByTagName("canvas")[0];
+        var cobj=canvas.getContext("2d");
+        var arr=[];
+        setInterval(function () {
+            cobj.clearRect(0,0,800,500);
+            var cobj1=new fire();
+            arr.push(cobj1);
+            for( var i=0;i<arr.length;i++){
+                arr[i].draw();
+                arr[i].update();
+                if(arr[i].r<0){
+                    arr[i]=new fire();
+                }
+            }
+        },60)
+        function fire() {
+            this.x=400;
+            this.y=260;
+            this.speedy=-4*Math.random();
+            this.life=6;
+            this.r=8*Math.random()+10;
+            this.speedr=0.1;
+            this.color="rgb(226,17,12)";
+        }
+        fire.prototype={
+            draw: function () {
+                cobj.save();
+                cobj.beginPath();
+                cobj.fillStyle=this.color;
+                cobj.globalCompositeOperation="lighter"
+                cobj.translate(this.x,this.y);
+                cobj.arc(0,0,this.r,0,Math.PI*2,true);
+                cobj.fill();
+                cobj.restore();
+            },
+            update: function(){
+                this.x+=4*Math.random()-2;
+                this.y+=this.speedy;
+                this.life-=0.2;
+                this.r-=0.6;
+            }
+        }
+    }
+</script>
+<body>
+<div>
+    <canvas width="800" height="500"></canvas>
+</div>
+</body>
+</html>
